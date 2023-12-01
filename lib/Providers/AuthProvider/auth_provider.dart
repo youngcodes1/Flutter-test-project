@@ -56,7 +56,7 @@ class AuthProvider extends ChangeNotifier {
       _loading = true;
       notifyListeners();
       User? user = await _userDatabaseHelper.queryUser(username, password);
-
+      await BoxStorage.saveUsername(username);
       if (user != null) {
         Get.to(const BottomNav());
       } else {

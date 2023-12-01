@@ -15,6 +15,6 @@ class BoxStorage {
 
   static Future<void> clearUsername() async {
     final box = await Hive.openBox(_usernameBoxName);
-    await box.delete('username');
+    await box.clear();
   }
 }
