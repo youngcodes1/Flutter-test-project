@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_test_project/Providers/ChatProvider/chat_provider.dart';
 import 'package:flutter_test_project/Providers/GptProvider/gpt_provider.dart';
 import 'package:flutter_test_project/Utils/Colors/colors.dart';
 import 'package:flutter_test_project/common/widgets/custom_appbar.dart/custom_appbar.dart';
@@ -30,13 +31,14 @@ class _HomeScreenState extends State<HomeScreen> {
   Widget build(BuildContext context) {
     final authProvider = Provider.of<AuthProvider>(context);
     final gptProvider = Provider.of<GptProvider>(context);
+
     return Scaffold(
       backgroundColor: AppColors.gcolor,
       appBar: CustomAppBar(
         backgroundColor: AppColors.myblue,
-        title: 'Home',
+        title: 'Chatbot',
         leading: const Icon(
-          Icons.task,
+          Icons.chat,
           size: 30,
           color: Colors.white,
         ),
@@ -69,32 +71,31 @@ class _HomeScreenState extends State<HomeScreen> {
       body: Column(
         children: [
           Expanded(
-              child: ListView(
-            children: [],
-          )),
+            child: ListView(),
+          ),
           Align(
             alignment: Alignment.bottomCenter,
             child: Padding(
               padding: const EdgeInsets.all(10.0),
-              child: Form(
-                key: _formkey,
-                child: CustomTextFormField(
-                  hintText: 'message bot ....',
-                  controller: message,
-                  suffixIcon: IconButton(
-                      onPressed: () async {
-                        if (_formkey.currentState!.validate()) {
-                          await gptProvider.sendMessage(message.text);
-                        }
-                      },
-                      icon: const Icon(
-                        Icons.send,
-                        color: Colors.white,
-                      )),
-                ),
+              child: CustomTextFormField(
+                hintText: 'Ask a Question ',
+                hintTextColor: Colors.white,
+                controller: message,
+                suffixIcon: IconButton(
+                    onPressed: () async {
+                      final messages = message.text;
+                      if (messages.isNotEmpty) {
+                        await gptProvider.sendMessage(messages);
+                        message.clear();
+                      }
+                    },
+                    icon: const Icon(
+                      Icons.send,
+                      color: Colors.white,
+                    )),
               ),
             ),
-          )
+          ),
         ],
       ),
     );

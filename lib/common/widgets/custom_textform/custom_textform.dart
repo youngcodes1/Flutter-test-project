@@ -4,6 +4,7 @@ import '../../../Utils/Colors/colors.dart';
 
 class CustomTextFormField extends StatelessWidget {
   final labelText;
+  final Color? hintTextColor;
   final initialValue;
   final hintText;
   final prefixIcon;
@@ -26,6 +27,7 @@ class CustomTextFormField extends StatelessWidget {
       this.validator,
       this.hintText,
       this.border,
+      this.hintTextColor,
       this.keyboardType,
       this.onChanged,
       this.initialValue});
@@ -62,6 +64,12 @@ class CustomTextFormField extends StatelessWidget {
         labelText: labelText,
         suffixIcon: suffixIcon,
         hintText: hintText,
+        hintStyle: TextStyle(
+          color: hintTextColor ??
+              Colors.grey, // Use provided color or default to grey
+          fontStyle: FontStyle.italic, // Italicize the hint text (optional)
+          // Add more styles as needed
+        ),
         border: border,
         floatingLabelStyle: const TextStyle(color: AppColors.myblue),
       ),

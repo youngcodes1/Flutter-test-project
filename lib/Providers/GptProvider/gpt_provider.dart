@@ -25,15 +25,13 @@ class GptProvider extends ChangeNotifier {
         'temperature': 0.7,
       };
       http.Response? res = await gptService.searchChat(input);
-
-      if (res!.statusCode >= 200 && res.statusCode < 300) {
-        Map data = jsonDecode(res.body);
-        print('Response from GPT-3: $data');
-      } else {
-        throw Exception('failed to send message');
-      }
-      notifyListeners();
       _isLoading = false;
+
+      if (res!.statusCode == 200) {
+        return jsonDecode(res.body);
+      } else {
+        throw Exception('failed to send message:${res.statusCode}');
+      }
     } catch (e) {
       debugPrint(e.toString());
       _isLoading = false;

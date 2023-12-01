@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_test_project/Providers/AuthProvider/auth_provider.dart';
+import 'package:flutter_test_project/Providers/ChatProvider/chat_provider.dart';
 import 'package:flutter_test_project/Providers/GptProvider/gpt_provider.dart';
 import 'package:flutter_test_project/Views/Screens/AppScreens/splash/splash_screen.dart';
 import 'package:get/get.dart';
@@ -27,6 +28,7 @@ class MyApp extends StatelessWidget {
         ChangeNotifierProvider(create: (_) => BottomNavProvider()),
         ChangeNotifierProvider(create: (_) => AuthProvider()),
         ChangeNotifierProvider(create: (_) => GptProvider()),
+        ChangeNotifierProvider(create: (_) => ChatProvider()),
       ],
       child: GetMaterialApp(
         title: 'Flutter Demo',
