@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_test_project/Providers/GptProvider/gpt_provider.dart';
 import 'package:flutter_test_project/Utils/Colors/colors.dart';
 import 'package:flutter_test_project/common/widgets/custom_appbar.dart/custom_appbar.dart';
+import 'package:flutter_test_project/common/widgets/custom_textform/custom_textform.dart';
 import 'package:provider/provider.dart';
 import 'package:quickalert/models/quickalert_type.dart';
 import 'package:quickalert/widgets/quickalert_dialog.dart';
@@ -15,10 +17,21 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
+  final _formkey = GlobalKey<FormState>();
+  TextEditingController message = TextEditingController();
+
+  @override
+  void dispose() {
+    super.dispose();
+    message.dispose();
+  }
+
   @override
   Widget build(BuildContext context) {
     final authProvider = Provider.of<AuthProvider>(context);
+    final gptProvider = Provider.of<GptProvider>(context);
     return Scaffold(
+      backgroundColor: AppColors.gcolor,
       appBar: CustomAppBar(
         backgroundColor: AppColors.myblue,
         title: 'Home',
@@ -53,7 +66,37 @@ class _HomeScreenState extends State<HomeScreen> {
         titleTextStyle: const TextStyle(
             fontSize: 25, color: Colors.white, fontWeight: FontWeight.bold),
       ),
-      body: ListView(),
+      body: Column(
+        children: [
+          Expanded(
+              child: ListView(
+            children: [],
+          )),
+          Align(
+            alignment: Alignment.bottomCenter,
+            child: Padding(
+              padding: const EdgeInsets.all(10.0),
+              child: Form(
+                key: _formkey,
+                child: CustomTextFormField(
+                  hintText: 'message bot ....',
+                  controller: message,
+                  suffixIcon: IconButton(
+                      onPressed: () async {
+                        if (_formkey.currentState!.validate()) {
+                          await gptProvider.sendMessage(message.text);
+                        }
+                      },
+                      icon: const Icon(
+                        Icons.send,
+                        color: Colors.white,
+                      )),
+                ),
+              ),
+            ),
+          )
+        ],
+      ),
     );
   }
 }

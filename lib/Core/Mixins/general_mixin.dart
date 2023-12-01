@@ -1,5 +1,6 @@
 import 'dart:async';
 
+import 'package:flutter_test_project/Core/Apis/apis.dart';
 import 'package:http/http.dart' as http;
 import 'package:quickalert/models/quickalert_type.dart';
 import 'package:quickalert/widgets/quickalert_dialog.dart';
@@ -12,7 +13,7 @@ mixin GeneralMixin {
   Map<String, String> setHeaders() {
     return {
       'Content-Type': "application/json",
-      'accept': "*/*",
+      'Authorization': 'Bearer $apiKey '
     };
   }
 
