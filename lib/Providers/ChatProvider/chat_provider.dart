@@ -5,8 +5,8 @@ import '../../Services/chat_service.dart';
 
 class ChatProvider extends ChangeNotifier {
   final ChatService chatService = ChatService();
-  List<String> _messages = [];
-  List<String> get messages => _messages;
+  List<ChatModel> _messages = [];
+  List<ChatModel> get messages => _messages;
 
   bool _isLoading = false;
   bool get loading => _isLoading;

@@ -4,13 +4,16 @@ class ChatModel {
   final String? answer;
   final String? question;
   bool isFavorite;
+  final String? createdDateTime;
 
-  ChatModel(
-      {this.id,
-      this.role,
-      this.question,
-      this.answer,
-      this.isFavorite = false});
+  ChatModel({
+    this.id,
+    this.role,
+    this.question,
+    this.answer,
+    this.isFavorite = false,
+    this.createdDateTime,
+  });
 
   Map<String, dynamic> toMap() {
     return {
@@ -19,6 +22,7 @@ class ChatModel {
       'answer': answer,
       'question': question,
       'isFavorite': isFavorite ? 1 : 0,
+      'createdDateTime': createdDateTime,
     };
   }
 
@@ -29,6 +33,7 @@ class ChatModel {
       question: map['question'],
       answer: map['answer'],
       isFavorite: map['isFavorite'] == 1,
+      createdDateTime: map['createdDateTime'],
     );
   }
 }
