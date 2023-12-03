@@ -57,10 +57,20 @@ class ChatDatabaseHelper {
       'chats',
       where: 'isFavorite = ?',
       whereArgs: [1],
-      orderBy: 'createdDate DESC, createdTime DESC',
+      orderBy: 'createdDateTime DESC ',
     );
     return List.generate(maps.length, (i) {
       return ChatModel.fromMap(maps[i]);
     });
+  }
+
+  Future<void> markAsFavorite(int chatId) async {
+    final db = await database;
+    await db.update(
+      'chats',
+      {'isFavorite': 1},
+      where: 'id = ?',
+      whereArgs: [chatId],
+    );
   }
 }
