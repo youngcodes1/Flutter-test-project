@@ -1,5 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_test_project/Models/chat_model.dart';
+import 'package:flutter_test_project/Providers/ChatProvider/chat_provider.dart';
+import 'package:flutter_test_project/common/widgets/chat_ui.dart';
+import 'package:provider/provider.dart';
 
+import '../../../../Providers/AuthProvider/auth_provider.dart';
 import '../../../../Utils/Colors/colors.dart';
 import '../../../../common/widgets/custom_appbar.dart/custom_appbar.dart';
 
@@ -13,6 +18,9 @@ class HistoryScreen extends StatefulWidget {
 class _HistoryScreenState extends State<HistoryScreen> {
   @override
   Widget build(BuildContext context) {
+    final authProvider = Provider.of<AuthProvider>(context);
+
+    final chatProvider = Provider.of<ChatProvider>(context);
     return Scaffold(
       backgroundColor: AppColors.gcolor,
       appBar: const CustomAppBar(
@@ -22,69 +30,28 @@ class _HistoryScreenState extends State<HistoryScreen> {
           automaticallyImplyLeading: false,
           titleTextStyle: TextStyle(
               fontSize: 25, color: Colors.white, fontWeight: FontWeight.bold)),
-      body: Padding(
-        padding: const EdgeInsets.only(top: 30.0),
-        child: ListView(
-          children: [
-            Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 10),
-              child: Container(
-                decoration: const BoxDecoration(color: Colors.blueGrey),
-                child: Padding(
-                  padding: const EdgeInsets.symmetric(vertical: 10),
-                  child: Column(
-                    children: [
-                      SizedBox(
-                        width: MediaQuery.of(context).size.width * 0.8,
-                        child: Card(
-                            elevation: 10,
-                            color: Colors.white,
-                            shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(20),
-                            ),
-                            child: const Wrap(
-                              children: [
-                                Padding(
-                                  padding: EdgeInsets.all(10.0),
-                                  child: Text(
-                                    'What is flutter',
-                                    style: TextStyle(fontSize: 20),
-                                  ),
-                                )
-                              ],
-                            )),
-                      ),
-                      const SizedBox(
-                        height: 10,
-                      ),
-                      SizedBox(
-                        width: MediaQuery.of(context).size.width * 0.8,
-                        child: Card(
-                            elevation: 10,
-                            color: AppColors.myblue,
-                            shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(20),
-                            ),
-                            child: const Wrap(
-                              children: [
-                                Padding(
-                                  padding: EdgeInsets.all(10.0),
-                                  child: Text(
-                                    'flutter is a cross-platform framework',
-                                    style: TextStyle(
-                                        color: Colors.white, fontSize: 20),
-                                  ),
-                                )
-                              ],
-                            )),
-                      ),
-                    ],
-                  ),
-                ),
-              ),
-            )
-          ],
-        ),
+      body: Column(
+        children: [
+          Expanded(
+            child: FutureBuilder<List<ChatModel>>(
+                future: chatProvider.getAllHistory(),
+                builder: (context, snapshot) {
+                  if (snapshot.hasData) {
+                    return ListView.builder(
+                        itemCount: snapshot.data!.length,
+                        itemBuilder: (context, index) {
+                          return ChatUI(
+                            question: snapshot.data![index].question,
+                            answer: snapshot.data![index].answer,
+                            date: snapshot.data![index].question,
+                          );
+                        });
+                  } else {
+                    return const Center(child: CircularProgressIndicator());
+                  }
+                }),
+          ),
+        ],
       ),
     );
   }

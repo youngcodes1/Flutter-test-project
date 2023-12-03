@@ -1,38 +1,38 @@
 class ChatModel {
   final String? userid;
-  final String? role;
+  // final String? role;
   final String? answer;
   final String? question;
-  bool isFavorite;
-  final DateTime? createdDateTime;
+  final int? isFavorite;
+  final String? createdDateTime;
 
   ChatModel({
     this.userid,
-    this.role,
+    // this.role,
     this.question,
     this.answer,
-    this.isFavorite = false,
+    this.isFavorite,
     this.createdDateTime,
   });
 
   Map<String, dynamic> toMap() {
     return {
       'userid': userid,
-      'role': role,
+      // 'role': role,
       'answer': answer,
       'question': question,
-      'isFavorite': isFavorite ? 1 : 0,
+      'isFavorite': isFavorite,
       'createdDateTime': createdDateTime,
     };
   }
 
-  factory ChatModel.fromMap(Map<String, dynamic> map) {
+  static ChatModel fromMap(Map<String, dynamic> map) {
     return ChatModel(
       userid: map['userid'],
-      role: map['role'],
+      // role: map['role'],
       question: map['question'],
       answer: map['answer'],
-      isFavorite: map['isFavorite'] == 1,
+      isFavorite: map['isFavorite'],
       createdDateTime: map['createdDateTime'],
     );
   }

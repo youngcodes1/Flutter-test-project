@@ -25,24 +25,32 @@ class ChatProvider extends ChangeNotifier {
       notifyListeners();
 
       final response = await chatService.messageResponse(message);
+      print(response);
 
       _isLoading = false;
       notifyListeners();
 
       if (response != null) {
-        _messages.add(response);
+        //_messages.add(response);
 
         final date = DateTime.now();
         final getuserId = await BoxStorage.getUsername();
-        ChatModel chat = ChatModel(
-            question: message,
-            answer: response,
-            createdDateTime: date,
-            userid: getuserId);
-        _chatDatabaseHelper.insertMessage(chat);
-        print('Received response: $response');
+        // ChatModel chat = ChatModel(
+        //     question: message,
+        //     answer: response,
+        //     isFavorite: 0,
+        //     createdDateTime: date,
+        //     userid: getuserId);
+        _chatDatabaseHelper.insertMessage(
+            questions: message,
+            answer: response.toString(),
+            createdAt: date.toString(),
+            isFavorite: 0,
+            userId: getuserId.toString());
+        // print('Received response: $response');
         notifyListeners();
       }
+      print("Hiiiii");
     } catch (e) {
       debugPrint(e.toString());
       _isLoading = false;
@@ -51,7 +59,7 @@ class ChatProvider extends ChangeNotifier {
     }
   }
 
-  getAllHistory() async {
+  Future<List<ChatModel>> getAllHistory() async {
     try {
       _isLoading = true;
       notifyListeners();
@@ -60,8 +68,10 @@ class ChatProvider extends ChangeNotifier {
       _isLoading = false;
       _messages = historyList;
       notifyListeners();
+      return historyList;
     } catch (e) {
       debugPrint(e.toString());
+      return [];
     }
   }
 

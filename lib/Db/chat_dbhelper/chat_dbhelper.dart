@@ -24,28 +24,37 @@ class ChatDatabaseHelper {
 
   Future _onCreate(Database db, int version) async {
     await db.execute('''
-          CREATE TABLE chats (
+          CREATE TABLE chat (
             id INTEGER PRIMARY KEY AUTOINCREMENT,
-            userid STRING,
+            userid TEXT,
             question TEXT ,
             answer TEXT,
-            createdDateTime NUMBER,
-            isFavorite INTEGER  
-
-
-            
+            createdDateTime TEXT,
+            isFavorite INTEGER
           )
           ''');
   }
 
-  insertMessage(ChatModel chat) async {
+  insertMessage({
+    required String userId,
+    required String questions,
+    required String answer,
+    required String createdAt,
+    required isFavorite,
+  }) async {
     final db = await database;
-    return db.insert('chats', chat.toMap());
+    return db.insert('chat', {
+      "userid": userId,
+      "question": questions,
+      "answer": answer,
+      "createdDateTime": createdAt,
+      "isFavorite": isFavorite,
+    });
   }
 
   Future<List<ChatModel>> getHistory() async {
     final db = await database;
-    final List<Map<String, dynamic>> maps = await db.query('chats');
+    final maps = await db.query('chat');
     return List.generate(maps.length, (i) {
       return ChatModel.fromMap(maps[i]);
     });
@@ -53,8 +62,8 @@ class ChatDatabaseHelper {
 
   Future<List<ChatModel>> getFavorites() async {
     final db = await database;
-    final List<Map<String, dynamic>> maps = await db.query(
-      'chats',
+    final maps = await db.query(
+      'chat',
       where: 'isFavorite = ?',
       whereArgs: [1],
       orderBy: 'createdDateTime DESC ',
@@ -67,7 +76,7 @@ class ChatDatabaseHelper {
   Future<void> markAsFavorite(int chatId) async {
     final db = await database;
     await db.update(
-      'chats',
+      'chat',
       {'isFavorite': 1},
       where: 'id = ?',
       whereArgs: [chatId],
@@ -80,7 +89,7 @@ class ChatDatabaseHelper {
     List<ChatModel> chatModel = [];
     final today = DateFormat('yMMMd').format(now);
     final maps = await db.query(
-      'chats',
+      'chat',
     );
     print(maps);
     for (var chat in maps) {

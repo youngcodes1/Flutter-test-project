@@ -23,7 +23,7 @@ class ChatService {
       print(response.body);
       if (response.statusCode == 200) {
         final responseData = jsonDecode(response.body);
-        final completion = responseData['choices'][0]['message'];
+        final completion = responseData['choices'][0]['message']["content"];
         return completion;
       } else {
         throw Exception('Failed to make request:${response.statusCode}');

@@ -75,7 +75,23 @@ class _HomeScreenState extends State<HomeScreen> {
       body: Column(
         children: [
           Expanded(
-            child: ChatUI(),
+            child: FutureBuilder<List<ChatModel>>(
+                future: chatProvider.fetchTodayMessages(),
+                builder: (context, snapshot) {
+                  if (snapshot.hasData) {
+                    return ListView.builder(
+                        itemCount: snapshot.data!.length,
+                        itemBuilder: (context, index) {
+                          return ChatUI(
+                            question: snapshot.data![index].question,
+                            answer: snapshot.data![index].answer,
+                            date: snapshot.data![index].question,
+                          );
+                        });
+                  } else {
+                    return const Center(child: CircularProgressIndicator());
+                  }
+                }),
           ),
           Align(
             alignment: Alignment.bottomCenter,
