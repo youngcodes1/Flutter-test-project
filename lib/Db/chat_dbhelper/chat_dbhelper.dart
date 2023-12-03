@@ -1,4 +1,5 @@
 import 'package:flutter_test_project/Models/chat_model.dart';
+import 'package:intl/intl.dart';
 import 'package:sqflite/sqflite.dart';
 import 'dart:async';
 import 'package:path/path.dart';
@@ -25,12 +26,11 @@ class ChatDatabaseHelper {
     await db.execute('''
           CREATE TABLE chats (
             id INTEGER PRIMARY KEY AUTOINCREMENT,
-            userid INTEGER,
+            userid STRING,
             question TEXT ,
             answer TEXT,
-            createdDate STRING,
-            createdTime STRING,
-            isFavorite INTEGER DEFAULT 0,
+            createdDateTime NUMBER,
+            isFavorite INTEGER  
 
 
             
@@ -72,5 +72,27 @@ class ChatDatabaseHelper {
       where: 'id = ?',
       whereArgs: [chatId],
     );
+  }
+
+  Future<List<ChatModel>> getTodayMessages() async {
+    final db = await database;
+    final now = DateTime.now();
+    List<ChatModel> chatModel = [];
+    final today = DateFormat('yMMMd').format(now);
+    final maps = await db.query(
+      'chats',
+    );
+    print(maps);
+    for (var chat in maps) {
+      if (DateFormat("yMMMd")
+              .format(DateTime.parse(chat["createdDateTime"].toString())) ==
+          today) {
+        chatModel.add(ChatModel.fromMap(chat));
+      }
+    }
+    // return List.generate(maps.length, (i) {
+    //   return ChatModel.fromMap(maps[i]);
+    // });
+    return chatModel;
   }
 }

@@ -1,13 +1,13 @@
 class ChatModel {
-  final int? id;
+  final String? userid;
   final String? role;
   final String? answer;
   final String? question;
   bool isFavorite;
-  final String? createdDateTime;
+  final DateTime? createdDateTime;
 
   ChatModel({
-    this.id,
+    this.userid,
     this.role,
     this.question,
     this.answer,
@@ -17,7 +17,7 @@ class ChatModel {
 
   Map<String, dynamic> toMap() {
     return {
-      'id': id,
+      'userid': userid,
       'role': role,
       'answer': answer,
       'question': question,
@@ -28,7 +28,7 @@ class ChatModel {
 
   factory ChatModel.fromMap(Map<String, dynamic> map) {
     return ChatModel(
-      id: map['id'],
+      userid: map['userid'],
       role: map['role'],
       question: map['question'],
       answer: map['answer'],

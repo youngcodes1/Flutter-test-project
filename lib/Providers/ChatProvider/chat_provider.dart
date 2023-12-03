@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_test_project/Core/BoxStorage/boxstorage.dart';
 import 'package:flutter_test_project/Db/chat_dbhelper/chat_dbhelper.dart';
 
 import '../../Models/chat_model.dart';
@@ -15,6 +16,8 @@ class ChatProvider extends ChangeNotifier {
   List<ChatModel> get history => _history;
   List<ChatModel> _favorites = [];
   List<ChatModel> get favorites => _favorites;
+  List<ChatModel> _todayMessages = [];
+  List<ChatModel> get todayMessages => _todayMessages;
 
   Future<void> sendMessageAndGetResponse(String message) async {
     try {
@@ -28,6 +31,15 @@ class ChatProvider extends ChangeNotifier {
 
       if (response != null) {
         _messages.add(response);
+
+        final date = DateTime.now();
+        final getuserId = await BoxStorage.getUsername();
+        ChatModel chat = ChatModel(
+            question: message,
+            answer: response,
+            createdDateTime: date,
+            userid: getuserId);
+        _chatDatabaseHelper.insertMessage(chat);
         print('Received response: $response');
         notifyListeners();
       }
@@ -46,7 +58,7 @@ class ChatProvider extends ChangeNotifier {
       final List<ChatModel> historyList =
           await _chatDatabaseHelper.getHistory();
       _isLoading = false;
-      _history = historyList;
+      _messages = historyList;
       notifyListeners();
     } catch (e) {
       debugPrint(e.toString());
@@ -71,6 +83,21 @@ class ChatProvider extends ChangeNotifier {
       notifyListeners();
     } catch (e) {
       debugPrint(e.toString());
+    }
+  }
+
+  Future<List<ChatModel>> fetchTodayMessages() async {
+    try {
+      _isLoading = true;
+      notifyListeners();
+      final List<ChatModel> todayMessage =
+          await _chatDatabaseHelper.getTodayMessages();
+      _todayMessages = todayMessage;
+      _isLoading = false;
+      return todayMessage;
+    } catch (e) {
+      debugPrint(e.toString());
+      return [];
     }
   }
 }
