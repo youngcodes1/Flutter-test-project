@@ -1,20 +1,18 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_test_project/Utils/Colors/colors.dart';
-import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
+import 'package:quickalert/models/quickalert_type.dart';
+import 'package:quickalert/widgets/quickalert_dialog.dart';
 
-import '../../Providers/ChatProvider/chat_provider.dart';
-
-class ChatUI extends StatelessWidget {
+class FavoriteUI extends StatelessWidget {
   final String? question;
   final String? answer;
   final String? date;
-  const ChatUI({super.key, this.question, this.answer, this.date});
+  const FavoriteUI({super.key, this.question, this.answer, this.date});
 
   // @override
   @override
   Widget build(BuildContext context) {
-    final chatProvider = Provider.of<ChatProvider>(context);
     return Padding(
       padding: const EdgeInsets.only(top: 30.0),
       child: Container(
@@ -72,22 +70,31 @@ class ChatUI extends StatelessWidget {
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  Text(
-                    '',
-
-                    // '23/12/23',
+                  const Text(
+                    '23/12/23',
                     style: TextStyle(
                         fontSize: 18,
                         color: Colors.white,
                         fontWeight: FontWeight.bold),
                   ),
                   IconButton(
-                    onPressed: () {},
-                    icon: const Icon(
-                      Icons.favorite_border_outlined,
-                      size: 30,
-                    ),
-                  )
+                      onPressed: () {
+                        QuickAlert.show(
+                          context: context,
+                          type: QuickAlertType.confirm,
+                          headerBackgroundColor: AppColors.myblue,
+                          text: 'you want to delete',
+                          confirmBtnText: 'Yes',
+                          cancelBtnText: 'No',
+                          confirmBtnColor: Colors.green,
+                          onConfirmBtnTap: () {},
+                        );
+                      },
+                      icon: const Icon(
+                        Icons.delete,
+                        color: Colors.red,
+                        size: 30,
+                      ))
                 ],
               ),
             )

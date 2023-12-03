@@ -31,23 +31,16 @@ class ChatProvider extends ChangeNotifier {
       notifyListeners();
 
       if (response != null) {
-        //_messages.add(response);
-
         final date = DateTime.now();
         final getuserId = await BoxStorage.getUsername();
-        // ChatModel chat = ChatModel(
-        //     question: message,
-        //     answer: response,
-        //     isFavorite: 0,
-        //     createdDateTime: date,
-        //     userid: getuserId);
+
         _chatDatabaseHelper.insertMessage(
             questions: message,
             answer: response.toString(),
             createdAt: date.toString(),
             isFavorite: 0,
             userId: getuserId.toString());
-        // print('Received response: $response');
+
         notifyListeners();
       }
       print("Hiiiii");
@@ -84,15 +77,25 @@ class ChatProvider extends ChangeNotifier {
     }
   }
 
-  getAllFavorites() async {
+  Future<void> removeFromFavorites(int chatId) async {
+    try {
+      await _chatDatabaseHelper.removeFromFavorites(chatId);
+      notifyListeners();
+    } catch (e) {
+      debugPrint(e.toString());
+    }
+  }
+
+  Future<List<ChatModel>> getAllFavorites() async {
     try {
       _isLoading = true;
       notifyListeners();
       _favorites = await _chatDatabaseHelper.getFavorites();
       _isLoading = false;
-      notifyListeners();
+      return _favorites;
     } catch (e) {
       debugPrint(e.toString());
+      return [];
     }
   }
 

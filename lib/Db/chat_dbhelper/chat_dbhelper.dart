@@ -36,6 +36,7 @@ class ChatDatabaseHelper {
   }
 
   insertMessage({
+    int? id,
     required String userId,
     required String questions,
     required String answer,
@@ -44,6 +45,7 @@ class ChatDatabaseHelper {
   }) async {
     final db = await database;
     return db.insert('chat', {
+      "id": id,
       "userid": userId,
       "question": questions,
       "answer": answer,
@@ -54,7 +56,7 @@ class ChatDatabaseHelper {
 
   Future<List<ChatModel>> getHistory() async {
     final db = await database;
-    final maps = await db.query('chat');
+    final maps = await db.query('chat', orderBy: 'createdDateTime DESC');
     return List.generate(maps.length, (i) {
       return ChatModel.fromMap(maps[i]);
     });
@@ -83,6 +85,16 @@ class ChatDatabaseHelper {
     );
   }
 
+  Future<void> removeFromFavorites(int chatId) async {
+    final db = await database;
+    await db.update(
+      'chat',
+      {'isFavorite': 0},
+      where: 'id = ?',
+      whereArgs: [chatId],
+    );
+  }
+
   Future<List<ChatModel>> getTodayMessages() async {
     final db = await database;
     final now = DateTime.now();
@@ -99,9 +111,7 @@ class ChatDatabaseHelper {
         chatModel.add(ChatModel.fromMap(chat));
       }
     }
-    // return List.generate(maps.length, (i) {
-    //   return ChatModel.fromMap(maps[i]);
-    // });
+
     return chatModel;
   }
 }
