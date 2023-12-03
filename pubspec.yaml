@@ -41,6 +41,9 @@ dependencies:
   # shared_preferences:
   hive_flutter:
   provider:
+  dash_chat_2:
+  chat_gpt_sdk:
+  flutter_spinkit:
 
 dev_dependencies:
   flutter_test:

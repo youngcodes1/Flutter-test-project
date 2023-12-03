@@ -1,13 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_test_project/Providers/ChatProvider/chat_provider.dart';
-import 'package:flutter_test_project/Providers/GptProvider/gpt_provider.dart';
+
 import 'package:flutter_test_project/Utils/Colors/colors.dart';
+
+import 'package:flutter_test_project/common/widgets/chat_ui.dart';
 import 'package:flutter_test_project/common/widgets/custom_appbar.dart/custom_appbar.dart';
 import 'package:flutter_test_project/common/widgets/custom_textform/custom_textform.dart';
 import 'package:provider/provider.dart';
 import 'package:quickalert/models/quickalert_type.dart';
 import 'package:quickalert/widgets/quickalert_dialog.dart';
-
+import 'package:dash_chat_2/dash_chat_2.dart';
+import '../../../../Models/chat_model.dart';
 import '../../../../Providers/AuthProvider/auth_provider.dart';
 
 class HomeScreen extends StatefulWidget {
@@ -30,7 +33,8 @@ class _HomeScreenState extends State<HomeScreen> {
   @override
   Widget build(BuildContext context) {
     final authProvider = Provider.of<AuthProvider>(context);
-    final gptProvider = Provider.of<GptProvider>(context);
+
+    final chatProvider = Provider.of<ChatProvider>(context);
 
     return Scaffold(
       backgroundColor: AppColors.gcolor,
@@ -71,7 +75,7 @@ class _HomeScreenState extends State<HomeScreen> {
       body: Column(
         children: [
           Expanded(
-            child: ListView(),
+            child: ChatUI(),
           ),
           Align(
             alignment: Alignment.bottomCenter,
@@ -81,18 +85,21 @@ class _HomeScreenState extends State<HomeScreen> {
                 hintText: 'Ask a Question ',
                 hintTextColor: Colors.white,
                 controller: message,
-                suffixIcon: IconButton(
-                    onPressed: () async {
-                      final messages = message.text;
-                      if (messages.isNotEmpty) {
-                        await gptProvider.sendMessage(messages);
-                        message.clear();
-                      }
-                    },
-                    icon: const Icon(
-                      Icons.send,
-                      color: Colors.white,
-                    )),
+                suffixIcon: Container(
+                  color: AppColors.myblue,
+                  child: IconButton(
+                      onPressed: () async {
+                        final mes = message.text;
+                        if (mes.isNotEmpty) {
+                          await chatProvider.sendMessageAndGetResponse(mes);
+                          message.clear();
+                        }
+                      },
+                      icon: const Icon(
+                        Icons.send,
+                        color: Colors.white,
+                      )),
+                ),
               ),
             ),
           ),

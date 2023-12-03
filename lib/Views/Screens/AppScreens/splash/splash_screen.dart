@@ -25,7 +25,7 @@ class _SplashScreenState extends State<SplashScreen> {
       backgroundColor: Colors.blue,
       body: Center(
         child: Icon(
-          Icons.book_online,
+          Icons.chat,
           size: 70,
         ),
       ),

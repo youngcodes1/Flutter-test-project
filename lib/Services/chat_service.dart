@@ -1,46 +1,35 @@
 import 'dart:convert';
 import 'package:http/http.dart' as http;
 
+import '../Core/Apis/apis.dart';
+
 class ChatService {
-  final List<Map<String, String>> messages = [];
-  static const String openAiKey =
-      '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';
-
-  Future<String> sendMessage(String prompt) async {
-    messages.add({
-      'role': 'user',
-      'content': prompt,
-    });
-
+  messageResponse(String message) async {
     try {
       final response = await http.post(
-        Uri.parse('https://api.openai.com/v1/chat/completions'),
+        Uri.parse(apiRoute),
         headers: {
           'Content-Type': 'application/json',
-          'Authorization': 'Bearer $openAiKey',
+          'Authorization': 'Bearer $apiKey',
         },
         body: jsonEncode({
-          'model': 'gpt-3.5-turbo',
-          'messages': messages,
+          "model": "gpt-3.5-turbo",
+          "messages": [
+            {"role": "user", "content": message}
+          ],
+          'temperature': 0.7,
         }),
       );
-
+      print(response.body);
       if (response.statusCode == 200) {
-        String content =
-            jsonDecode(response.body)['choices'][0]['message']['content'];
-        content = content.trim();
-
-        messages.add({
-          'role': 'assistant',
-          'content': content,
-        });
-
-        return content;
+        final responseData = jsonDecode(response.body);
+        final completion = responseData['choices'][0]['message'];
+        return completion;
       } else {
-        return 'An internal error occurred';
+        throw Exception('Failed to make request:${response.statusCode}');
       }
     } catch (e) {
-      return 'Error: $e';
+      print(e.toString());
     }
   }
 }
