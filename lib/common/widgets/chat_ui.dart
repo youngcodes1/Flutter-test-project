@@ -73,10 +73,10 @@ class ChatUI extends StatelessWidget {
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   Text(
-                    '',
+                    DateFormat('dd/MM/yy HH:mm').format(DateTime.parse(date!)),
 
                     // '23/12/23',
-                    style: TextStyle(
+                    style: const TextStyle(
                         fontSize: 18,
                         color: Colors.white,
                         fontWeight: FontWeight.bold),

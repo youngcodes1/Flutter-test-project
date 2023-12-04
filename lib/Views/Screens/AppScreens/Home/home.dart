@@ -76,22 +76,38 @@ class _HomeScreenState extends State<HomeScreen> {
         children: [
           Expanded(
             child: FutureBuilder<List<ChatModel>>(
-                future: chatProvider.fetchTodayMessages(),
-                builder: (context, snapshot) {
-                  if (snapshot.hasData) {
-                    return ListView.builder(
-                        itemCount: snapshot.data!.length,
-                        itemBuilder: (context, index) {
-                          return ChatUI(
-                            question: snapshot.data![index].question,
-                            answer: snapshot.data![index].answer,
-                            date: snapshot.data![index].question,
-                          );
-                        });
-                  } else {
-                    return const Center(child: CircularProgressIndicator());
-                  }
-                }),
+              future: chatProvider.fetchTodayMessages(),
+              builder: (context, snapshot) {
+                if (snapshot.connectionState == ConnectionState.waiting) {
+                  return const Center(child: CircularProgressIndicator());
+                } else if (snapshot.hasError) {
+                  return const Center(child: Text('Error loading messages'));
+                } else if (snapshot.hasData && snapshot.data!.isEmpty) {
+                  return const Center(
+                    child: Text(
+                      'Start a new message!',
+                      style: TextStyle(
+                          fontSize: 18,
+                          color: Colors.white,
+                          fontWeight: FontWeight.bold),
+                    ),
+                  );
+                } else if (snapshot.hasData) {
+                  return ListView.builder(
+                    itemCount: snapshot.data!.length,
+                    itemBuilder: (context, index) {
+                      return ChatUI(
+                        question: snapshot.data![index].question,
+                        answer: snapshot.data![index].answer,
+                        date: snapshot.data![index].createdDateTime,
+                      );
+                    },
+                  );
+                } else {
+                  return const Center(child: Text('Unknown error occurred'));
+                }
+              },
+            ),
           ),
           Align(
             alignment: Alignment.bottomCenter,

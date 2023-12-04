@@ -43,7 +43,7 @@ class _HistoryScreenState extends State<HistoryScreen> {
                           return ChatUI(
                             question: snapshot.data![index].question,
                             answer: snapshot.data![index].answer,
-                            date: snapshot.data![index].question,
+                            date: snapshot.data![index].createdDateTime,
                           );
                         });
                   } else {
