@@ -75,23 +75,23 @@ class ChatDatabaseHelper {
     });
   }
 
-  Future<void> markAsFavorite(int chatId) async {
+  Future<void> markAsFavorite(int id) async {
     final db = await database;
     await db.update(
       'chat',
       {'isFavorite': 1},
       where: 'id = ?',
-      whereArgs: [chatId],
+      whereArgs: [id],
     );
   }
 
-  Future<void> removeFromFavorites(int chatId) async {
+  Future<void> removeFromFavorites(int id) async {
     final db = await database;
     await db.update(
       'chat',
       {'isFavorite': 0},
       where: 'id = ?',
-      whereArgs: [chatId],
+      whereArgs: [id],
     );
   }
 

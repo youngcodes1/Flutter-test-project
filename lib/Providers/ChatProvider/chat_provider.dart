@@ -34,7 +34,7 @@ class ChatProvider extends ChangeNotifier {
         final date = DateTime.now();
         final getuserId = await BoxStorage.getUsername();
 
-        _chatDatabaseHelper.insertMessage(
+        await _chatDatabaseHelper.insertMessage(
             questions: message,
             answer: response.toString(),
             createdAt: date.toString(),

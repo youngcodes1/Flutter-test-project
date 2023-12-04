@@ -6,10 +6,12 @@ import 'package:provider/provider.dart';
 import '../../Providers/ChatProvider/chat_provider.dart';
 
 class ChatUI extends StatelessWidget {
+  final int id;
   final String? question;
   final String? answer;
   final String? date;
-  const ChatUI({super.key, this.question, this.answer, this.date});
+  const ChatUI(
+      {super.key, required this.id, this.question, this.answer, this.date});
 
   // @override
   @override
@@ -74,15 +76,15 @@ class ChatUI extends StatelessWidget {
                 children: [
                   Text(
                     DateFormat('dd/MM/yy HH:mm').format(DateTime.parse(date!)),
-
-                    // '23/12/23',
                     style: const TextStyle(
                         fontSize: 18,
                         color: Colors.white,
                         fontWeight: FontWeight.bold),
                   ),
                   IconButton(
-                    onPressed: () {},
+                    onPressed: () {
+                      chatProvider.markFavorite(id);
+                    },
                     icon: const Icon(
                       Icons.favorite_border_outlined,
                       size: 30,

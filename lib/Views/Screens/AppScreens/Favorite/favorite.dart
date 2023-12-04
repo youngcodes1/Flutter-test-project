@@ -42,7 +42,7 @@ class _FavoriteScreenState extends State<FavoriteScreen> {
                           return FavoriteUI(
                             question: snapshot.data![index].question,
                             answer: snapshot.data![index].answer,
-                            date: snapshot.data![index].question,
+                            date: snapshot.data![index].createdDateTime,
                           );
                         });
                   } else {

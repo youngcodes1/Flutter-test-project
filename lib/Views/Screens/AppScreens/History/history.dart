@@ -18,8 +18,6 @@ class HistoryScreen extends StatefulWidget {
 class _HistoryScreenState extends State<HistoryScreen> {
   @override
   Widget build(BuildContext context) {
-    final authProvider = Provider.of<AuthProvider>(context);
-
     final chatProvider = Provider.of<ChatProvider>(context);
     return Scaffold(
       backgroundColor: AppColors.gcolor,
@@ -40,7 +38,9 @@ class _HistoryScreenState extends State<HistoryScreen> {
                     return ListView.builder(
                         itemCount: snapshot.data!.length,
                         itemBuilder: (context, index) {
+                          ChatModel chat = snapshot.data![index];
                           return ChatUI(
+                            id: chat.id!,
                             question: snapshot.data![index].question,
                             answer: snapshot.data![index].answer,
                             date: snapshot.data![index].createdDateTime,

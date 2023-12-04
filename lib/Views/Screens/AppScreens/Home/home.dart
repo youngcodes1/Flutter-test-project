@@ -9,7 +9,6 @@ import 'package:flutter_test_project/common/widgets/custom_textform/custom_textf
 import 'package:provider/provider.dart';
 import 'package:quickalert/models/quickalert_type.dart';
 import 'package:quickalert/widgets/quickalert_dialog.dart';
-import 'package:dash_chat_2/dash_chat_2.dart';
 import '../../../../Models/chat_model.dart';
 import '../../../../Providers/AuthProvider/auth_provider.dart';
 
@@ -96,7 +95,9 @@ class _HomeScreenState extends State<HomeScreen> {
                   return ListView.builder(
                     itemCount: snapshot.data!.length,
                     itemBuilder: (context, index) {
+                      ChatModel chat = snapshot.data![index];
                       return ChatUI(
+                        id: chat.id!,
                         question: snapshot.data![index].question,
                         answer: snapshot.data![index].answer,
                         date: snapshot.data![index].createdDateTime,
