@@ -85,8 +85,9 @@ class ChatUI extends StatelessWidget {
                         chatProvider.markFavorite(id);
                       },
                       icon: const Icon(
-                        Icons.favorite_border_outlined,
+                        Icons.favorite,
                         size: 30,
+                        color: Colors.red,
                       ))
                 ],
               ),

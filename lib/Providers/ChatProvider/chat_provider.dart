@@ -74,6 +74,11 @@ class ChatProvider extends ChangeNotifier {
     try {
       await _chatDatabaseHelper.markAsFavorite(id);
       notifyListeners();
+      QuickAlert.show(
+        context: Get.context!,
+        type: QuickAlertType.success,
+        text: 'Favorite added Successfully!',
+      );
     } catch (e) {
       debugPrint(e.toString());
     }
