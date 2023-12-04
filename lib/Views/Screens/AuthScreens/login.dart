@@ -140,6 +140,7 @@ class _LoginScreenState extends State<LoginScreen> {
                                       if (_formkey.currentState!.validate()) {
                                         await authProvider.loginUser(
                                             username.text, password.text);
+                                        _formkey.currentState?.reset();
                                       }
                                     },
                           color: AppColors.myblue,

@@ -164,6 +164,7 @@ class _SignupScreenState extends State<SignupScreen> {
                                   if (_formkey.currentState!.validate()) {
                                     await authProvider.signupUser(
                                         username.text, password.text);
+                                    _formkey.currentState?.reset();
                                   }
                                 },
                           color: AppColors.myblue,
