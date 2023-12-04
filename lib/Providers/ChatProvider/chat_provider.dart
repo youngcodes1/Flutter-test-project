@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_test_project/Core/BoxStorage/boxstorage.dart';
 import 'package:flutter_test_project/Db/chat_dbhelper/chat_dbhelper.dart';
+import 'package:get/get.dart';
+import 'package:quickalert/models/quickalert_type.dart';
+import 'package:quickalert/widgets/quickalert_dialog.dart';
 
 import '../../Models/chat_model.dart';
 import '../../Services/chat_service.dart';
@@ -25,7 +28,7 @@ class ChatProvider extends ChangeNotifier {
       notifyListeners();
 
       final response = await chatService.messageResponse(message);
-      print(response);
+      debugPrint(response);
 
       _isLoading = false;
       notifyListeners();
@@ -43,7 +46,6 @@ class ChatProvider extends ChangeNotifier {
 
         notifyListeners();
       }
-      print("Hiiiii");
     } catch (e) {
       debugPrint(e.toString());
       _isLoading = false;
@@ -81,6 +83,11 @@ class ChatProvider extends ChangeNotifier {
     try {
       await _chatDatabaseHelper.removeFromFavorites(chatId);
       notifyListeners();
+      QuickAlert.show(
+        context: Get.context!,
+        type: QuickAlertType.success,
+        text: 'Favorite deleted Successfully!',
+      );
     } catch (e) {
       debugPrint(e.toString());
     }

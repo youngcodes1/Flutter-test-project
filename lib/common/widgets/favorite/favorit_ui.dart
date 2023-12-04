@@ -1,19 +1,25 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_test_project/Utils/Colors/colors.dart';
+import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 import 'package:quickalert/models/quickalert_type.dart';
 import 'package:quickalert/widgets/quickalert_dialog.dart';
 
+import '../../../Providers/ChatProvider/chat_provider.dart';
+
 class FavoriteUI extends StatelessWidget {
+  final int id;
   final String? question;
   final String? answer;
   final String? date;
-  const FavoriteUI({super.key, this.question, this.answer, this.date});
+  const FavoriteUI(
+      {super.key, required this.id, this.question, this.answer, this.date});
 
   // @override
   @override
   Widget build(BuildContext context) {
+    final chatProvider = Provider.of<ChatProvider>(context);
     return Padding(
       padding: const EdgeInsets.only(top: 30.0),
       child: Container(
@@ -88,7 +94,10 @@ class FavoriteUI extends StatelessWidget {
                           confirmBtnText: 'Yes',
                           cancelBtnText: 'No',
                           confirmBtnColor: Colors.green,
-                          onConfirmBtnTap: () {},
+                          onConfirmBtnTap: () {
+                            Get.back();
+                            chatProvider.removeFromFavorites(id);
+                          },
                         );
                       },
                       icon: const Icon(

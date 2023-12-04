@@ -23,7 +23,7 @@ class _FavoriteScreenState extends State<FavoriteScreen> {
     return Scaffold(
       backgroundColor: AppColors.gcolor,
       appBar: const CustomAppBar(
-          title: 'Favorite',
+          title: 'Favorites',
           backgroundColor: AppColors.myblue,
           centerTitle: true,
           automaticallyImplyLeading: false,
@@ -39,7 +39,9 @@ class _FavoriteScreenState extends State<FavoriteScreen> {
                     return ListView.builder(
                         itemCount: snapshot.data!.length,
                         itemBuilder: (context, index) {
+                          ChatModel chat = snapshot.data![index];
                           return FavoriteUI(
+                            id: chat.id!,
                             question: snapshot.data![index].question,
                             answer: snapshot.data![index].answer,
                             date: snapshot.data![index].createdDateTime,
