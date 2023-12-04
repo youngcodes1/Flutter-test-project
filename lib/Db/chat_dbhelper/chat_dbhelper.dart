@@ -103,7 +103,7 @@ class ChatDatabaseHelper {
     final maps = await db.query(
       'chat',
     );
-    print(maps);
+
     for (var chat in maps) {
       if (DateFormat("yMMMd")
               .format(DateTime.parse(chat["createdDateTime"].toString())) ==

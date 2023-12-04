@@ -13,7 +13,6 @@ class ChatUI extends StatelessWidget {
   const ChatUI(
       {super.key, required this.id, this.question, this.answer, this.date});
 
-  // @override
   @override
   Widget build(BuildContext context) {
     final chatProvider = Provider.of<ChatProvider>(context);
@@ -82,14 +81,13 @@ class ChatUI extends StatelessWidget {
                         fontWeight: FontWeight.bold),
                   ),
                   IconButton(
-                    onPressed: () {
-                      chatProvider.markFavorite(id);
-                    },
-                    icon: const Icon(
-                      Icons.favorite_border_outlined,
-                      size: 30,
-                    ),
-                  )
+                      onPressed: () {
+                        chatProvider.markFavorite(id);
+                      },
+                      icon: const Icon(
+                        Icons.favorite_border_outlined,
+                        size: 30,
+                      ))
                 ],
               ),
             )
