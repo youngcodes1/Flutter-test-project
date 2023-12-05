@@ -54,20 +54,23 @@ class ChatDatabaseHelper {
     });
   }
 
-  Future<List<ChatModel>> getHistory() async {
+  Future<List<ChatModel>> getHistory(String userId) async {
     final db = await database;
-    final maps = await db.query('chat', orderBy: 'createdDateTime DESC');
+    final maps = await db.query('chat',
+        where: 'userid = ?',
+        whereArgs: [userId],
+        orderBy: 'createdDateTime DESC');
     return List.generate(maps.length, (i) {
       return ChatModel.fromMap(maps[i]);
     });
   }
 
-  Future<List<ChatModel>> getFavorites() async {
+  Future<List<ChatModel>> getFavorites(String userId) async {
     final db = await database;
     final maps = await db.query(
       'chat',
-      where: 'isFavorite = ?',
-      whereArgs: [1],
+      where: 'userid = ? AND isFavorite = ?',
+      whereArgs: [userId, 1],
       orderBy: 'createdDateTime DESC ',
     );
     return List.generate(maps.length, (i) {
@@ -95,13 +98,15 @@ class ChatDatabaseHelper {
     );
   }
 
-  Future<List<ChatModel>> getTodayMessages() async {
+  Future<List<ChatModel>> getTodayMessages(String userId) async {
     final db = await database;
     final now = DateTime.now();
     List<ChatModel> chatModel = [];
     final today = DateFormat('yMMMd').format(now);
     final maps = await db.query(
       'chat',
+      where: 'userid = ?',
+      whereArgs: [userId],
     );
 
     for (var chat in maps) {

@@ -94,6 +94,7 @@ class AuthProvider extends ChangeNotifier {
       ScaffoldMessenger.of(Get.context!).showSnackBar(
         const SnackBar(content: Text('logged out successfully')),
       );
+      _loading = false;
       notifyListeners();
     } catch (e) {
       debugPrint(e.toString());

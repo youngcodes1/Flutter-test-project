@@ -31,6 +31,7 @@ migrate_working_dir/
 .pub-cache/
 .pub/
 /build/
+./lib/Core/Apis/apis.dart
 
 # Symbolication related
 app.*.symbols

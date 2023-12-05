@@ -58,8 +58,9 @@ class ChatProvider extends ChangeNotifier {
     try {
       _isLoading = true;
       notifyListeners();
+      final userid = await BoxStorage.getUsername();
       final List<ChatModel> historyList =
-          await _chatDatabaseHelper.getHistory();
+          await _chatDatabaseHelper.getHistory(userid!);
       _isLoading = false;
       _messages = historyList;
       notifyListeners();
@@ -102,7 +103,8 @@ class ChatProvider extends ChangeNotifier {
     try {
       _isLoading = true;
       notifyListeners();
-      _favorites = await _chatDatabaseHelper.getFavorites();
+      final userid = await BoxStorage.getUsername();
+      _favorites = await _chatDatabaseHelper.getFavorites(userid!);
       _isLoading = false;
       return _favorites;
     } catch (e) {
@@ -115,11 +117,16 @@ class ChatProvider extends ChangeNotifier {
     try {
       _isLoading = true;
       notifyListeners();
-      final List<ChatModel> todayMessage =
-          await _chatDatabaseHelper.getTodayMessages();
-      _todayMessages = todayMessage;
-      _isLoading = false;
-      return todayMessage;
+      final userid = await BoxStorage.getUsername();
+      if (userid != null) {
+        final List<ChatModel> todayMessage =
+            await _chatDatabaseHelper.getTodayMessages(userid!);
+        _todayMessages = todayMessage;
+        _isLoading = false;
+        return todayMessage;
+      } else {
+        return [];
+      }
     } catch (e) {
       debugPrint(e.toString());
       return [];
